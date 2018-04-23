@@ -1,0 +1,72 @@
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'org.springframework.boot'
+
+group = 'fi.stardex'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = 1.8
+
+def langLevel = JavaVersion.VERSION_1_8
+
+sourceCompatibility = langLevel
+targetCompatibility = langLevel
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+tasks.withType(GroovyCompile) {
+    options.encoding = 'UTF-8'
+}
+
+ext {
+    mainClassName = 'fi.stardex.boschdemo.main.Main'
+    hibernateEntitymanagerVersion = '5.1.0.Final'
+    javaeeApi = '7.0'
+    h2Version = '1.4.191'
+    springBootVersion = '1.5.8.RELEASE'
+    liquibaseVersion = '3.4.2'
+}
+
+idea {
+    project {
+        jdkName = langLevel
+        languageLevel = langLevel
+    }
+}
+
+dependencies {
+    compile('org.springframework.boot:spring-boot-starter')
+    compile('org.springframework.boot:spring-boot-starter-test')
+    compile "org.springframework.boot:spring-boot-starter-data-jpa:$springBootVersion"
+    compile "com.h2database:h2:$h2Version"
+    compile "org.hibernate:hibernate-entitymanager:$hibernateEntitymanagerVersion"
+    compile "org.hibernate:hibernate-validator:$hibernateEntitymanagerVersion"
+    compile "javax:javaee-api:$javaeeApi"
+    compile "org.liquibase:liquibase-core:$liquibaseVersion"
+}
+
+buildscript {
+    ext {
+        springBootVersion = '1.5.8.RELEASE'
+    }
+    repositories {
+        jcenter()
+        mavenLocal()
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+jar {
+    baseName = 'gs-gradle'
+    version =  '0.1.0'
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '3.1'
+    distributionUrl = "https://services.gradle.org/distributions/gradle-$gradleVersion-all.zip"
+}
