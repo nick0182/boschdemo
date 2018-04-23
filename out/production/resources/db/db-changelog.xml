@@ -1,23 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-                   xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext
-                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
-                        http://www.liquibase.org/xml/ns/dbchangelog
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
 
-    <changeSet id="1" author="Anton">
+    <changeSet id="1" author="Nikolay">
         <createTable tableName="injectors">
             <column name="injector_code" type="VARCHAR(45)">
                 <constraints nullable="false"/>
             </column>
-            <column name="codetype" type="VARCHAR(15)"/>
-            <column name="checksum_m" type="INT"/>
+            <column name="codetype" type="INT"/>
+            <column name="k_coefficient" type="INT"/>
         </createTable>
     </changeSet>
 
-    <changeSet id="2" author="Anton">
+    <changeSet id="2" author="Nikolay">
         <createTable tableName="injector_test">
             <column autoIncrement="true" name="id" type="INT">
                 <constraints nullable="false"/>
@@ -39,11 +36,10 @@
             <column name="nominal_flow" type="DECIMAL(7, 2)"/>
             <column name="flow_range" type="DECIMAL(7, 2)"/>
             <column name="max_correction" type="INT"/>
-            <column name="responce_time" type="DECIMAL(7, 2)"/>
         </createTable>
     </changeSet>
 
-    <changeSet  id="3" author="Anton">
+    <changeSet id="3" author="Nikolay">
         <createTable tableName="test_name">
             <column autoIncrement="true" name="id" type="INT">
                 <constraints primaryKey="true"/>
@@ -57,20 +53,7 @@
         </createTable>
     </changeSet>
 
-    <changeSet id="4" author="Anton">
-        <addPrimaryKey tableName="injectors" constraintName="pk_injectors" columnNames="injector_code"/>
-    </changeSet>
-    <changeSet id="5" author="Anton">
-        <addPrimaryKey columnNames="id" constraintName="pk_injector_test" tableName="injector_test"/>
-    </changeSet>
-
-    <changeSet id="6" author="Anton">
-        <createIndex indexName="fk_injector_code_from_test_idx" tableName="injector_test">
-            <column name="injector_code"/>
-        </createIndex>
-    </changeSet>
-
-    <changeSet id="7" author="Anton">
+    <changeSet id="4" author="Nikolay">
         <comment>Load injectors table</comment>
         <loadData
                 encoding="UTF-8"
@@ -81,27 +64,36 @@
         </rollback>
     </changeSet>
 
-    <changeSet id="8" author="Antopn">
+    <changeSet id="5" author="Nikolay">
         <comment>Load injector tests table</comment>
         <loadData tableName="injector_test"
                   encoding="UTF-8"
-                  separator=","
                   file="db/injectorTests.csv"/>
         <rollback>
             <delete tableName="injector_test"/>
         </rollback>
     </changeSet>
 
-    <changeSet id="9" author="Anton">
+    <changeSet id="6" author="Nikolay">
         <comment>Load test_name table</comment>
         <loadData encoding="UTF-8"
                   file="db/testNames.csv"
-                  separator=","
                   tableName="test_name"/>
         <rollback>
             <delete tableName="test_name"/>
         </rollback>
     </changeSet>
 
+    <changeSet id="7" author="Nikolay">
+        <addPrimaryKey tableName="injectors" constraintName="pk_injectors" columnNames="injector_code"/>
+    </changeSet>
+    <changeSet id="8" author="Nikolay">
+        <addPrimaryKey columnNames="id" constraintName="pk_injector_test" tableName="injector_test"/>
+    </changeSet>
 
+    <changeSet id="9" author="Nikolay">
+        <createIndex indexName="fk_injector_code_from_test_idx" tableName="injector_test">
+            <column name="injector_code"/>
+        </createIndex>
+    </changeSet>
 </databaseChangeLog>
