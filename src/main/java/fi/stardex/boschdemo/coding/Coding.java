@@ -13,7 +13,7 @@ public class Coding {
 
     private static final int K_COEFF_BIT_LENGTH = 2;
 
-    public static void calculate(Injector injector, Map<String, Float> realFlowMap, Map<String, Float> nominalFlowMap) {
+    public static String calculate(Injector injector, Map<String, Float> realFlowMap, Map<String, Float> nominalFlowMap) {
 
         Map<String, Integer> bitNumberMap = new LinkedHashMap<>();
 
@@ -89,7 +89,7 @@ public class Coding {
 
         List<Integer> finalList = getIntList(list);
 
-        System.out.println(getCode(finalList));
+        return getCode(finalList);
 
         /*for (Map.Entry<String, Integer> entry : preparedCodeData.entrySet()) {
             System.out.println(entry.getKey() + " " + entry.getValue());
@@ -97,11 +97,11 @@ public class Coding {
 
         for (Map.Entry<String, Integer> entry : bitNumberMap.entrySet()) {
             System.out.println(entry.getKey() + " " + entry.getValue());
-        }*/
+        }
 
         for (Map.Entry<String, String> entry : binaryMap.entrySet()) {
             System.out.println(entry.getKey() + " " + entry.getValue());
-        }
+        }*/
 
     }
 

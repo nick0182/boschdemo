@@ -147,12 +147,12 @@
         </GridPane>
       <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="200.0">
          <children>
-            <Label text="Checksumm: ">
+            <Label text="Code: ">
                <HBox.margin>
                   <Insets left="50.0" />
                </HBox.margin>
             </Label>
-            <TextField fx:id="checksummTF" editable="false" />
+            <TextField fx:id="codeTF" editable="false" />
          </children>
       </HBox>
     </children>

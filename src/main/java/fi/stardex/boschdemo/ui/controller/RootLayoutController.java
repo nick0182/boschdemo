@@ -3,7 +3,6 @@ package fi.stardex.boschdemo.ui.controller;
 import fi.stardex.boschdemo.coding.Coding;
 import fi.stardex.boschdemo.persistance.orm.Injector;
 import fi.stardex.boschdemo.persistance.orm.InjectorTest;
-import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -15,21 +14,19 @@ import javafx.scene.input.MouseEvent;
 
 import javax.annotation.PostConstruct;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class RootLayoutController {
 
     @FXML
-    public ComboBox<Injector> comboBoxModels;
+    private ComboBox<Injector> comboBoxModels;
 
     @FXML
-    public Label codetype;
+    private Label codetype;
 
     @FXML
-    public Label k_coefficient;
+    private Label k_coefficient;
 
     @FXML
     private Label nominalEM;
@@ -62,22 +59,25 @@ public class RootLayoutController {
     private Label flowRangeVE2;
 
     @FXML
-    public TextField realFlowEM;
+    private TextField realFlowEM;
 
     @FXML
-    public TextField realFlowLL;
+    private TextField realFlowLL;
 
     @FXML
-    public TextField realFlowVL;
+    private TextField realFlowVL;
 
     @FXML
-    public TextField realFlowVE;
+    private TextField realFlowVE;
 
     @FXML
-    public TextField realFlowVE2;
+    private TextField realFlowVE2;
 
     @FXML
-    public Button calculateBtn;
+    private Button calculateBtn;
+
+    @FXML
+    private TextField codeTF;
 
     private Map<String, Float> realFlowMap = new LinkedHashMap<>();
 
@@ -102,7 +102,7 @@ public class RootLayoutController {
         realFlowEM.textProperty().addListener((observable, oldValue, newValue) -> {
             realFlowMap.put("EM", Float.parseFloat(newValue));
         });
-        
+
         realFlowLL.textProperty().addListener((observable, oldValue, newValue) -> {
             realFlowMap.put("LL", Float.parseFloat(newValue));
         });
@@ -119,8 +119,10 @@ public class RootLayoutController {
             realFlowMap.put("VE2", Float.parseFloat(newValue));
         });
 
-        calculateBtn.setOnMouseClicked(event ->
-                Coding.calculate(comboBoxModels.getSelectionModel().getSelectedItem(), realFlowMap, nominalFlowMap));
+        calculateBtn.setOnMouseClicked(event -> {
+            String code = Coding.calculate(comboBoxModels.getSelectionModel().getSelectedItem(), realFlowMap, nominalFlowMap);
+            codeTF.setText(code);
+        });
     }
 
 
