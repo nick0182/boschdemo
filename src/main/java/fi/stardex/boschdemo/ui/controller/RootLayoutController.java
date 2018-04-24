@@ -78,17 +78,17 @@ public class RootLayoutController {
     @FXML
     public Button calculateBtn;
 
-    private Map<String, Double> realFlowMap = new HashMap<>();
+    private Map<String, Float> realFlowMap = new HashMap<>();
 
     {
-        realFlowMap.put("EM", 0d);
-        realFlowMap.put("LL", 0d);
-        realFlowMap.put("VL", 0d);
-        realFlowMap.put("VE", 0d);
-        realFlowMap.put("VE2", 0d);
+        realFlowMap.put("EM", 0f);
+        realFlowMap.put("LL", 0f);
+        realFlowMap.put("VL", 0f);
+        realFlowMap.put("VE", 0f);
+        realFlowMap.put("VE2", 0f);
     }
 
-    private Map<String, Double> nominalFlowMap = new HashMap<>();
+    private Map<String, Float> nominalFlowMap = new HashMap<>();
 
     public ComboBox getComboBoxModels() {
         return comboBoxModels;
@@ -99,23 +99,23 @@ public class RootLayoutController {
         comboBoxModels.getSelectionModel().selectedItemProperty().addListener(RootLayoutController.this::changed);
 
         realFlowEM.textProperty().addListener((observable, oldValue, newValue) -> {
-            realFlowMap.put("EM", Double.parseDouble(newValue));
+            realFlowMap.put("EM", Float.parseFloat(newValue));
         });
         
         realFlowLL.textProperty().addListener((observable, oldValue, newValue) -> {
-            realFlowMap.put("LL", Double.parseDouble(newValue));
+            realFlowMap.put("LL", Float.parseFloat(newValue));
         });
 
         realFlowVL.textProperty().addListener((observable, oldValue, newValue) -> {
-            realFlowMap.put("VL", Double.parseDouble(newValue));
+            realFlowMap.put("VL", Float.parseFloat(newValue));
         });
 
         realFlowVE.textProperty().addListener((observable, oldValue, newValue) -> {
-            realFlowMap.put("VE", Double.parseDouble(newValue));
+            realFlowMap.put("VE", Float.parseFloat(newValue));
         });
 
         realFlowVE2.textProperty().addListener((observable, oldValue, newValue) -> {
-            realFlowMap.put("VE2", Double.parseDouble(newValue));
+            realFlowMap.put("VE2", Float.parseFloat(newValue));
         });
 
         calculateBtn.setOnMouseClicked(event ->
@@ -142,23 +142,23 @@ public class RootLayoutController {
         switch (injectorTest.toString()) {
             case "EM":
                 setValueToLabels(nominalEM, flowRangeEM, injectorTest);
-                nominalFlowMap.put("EM", injectorTest.getNominalFlow().doubleValue());
+                nominalFlowMap.put("EM", injectorTest.getNominalFlow().floatValue());
                 break;
             case "LL":
                 setValueToLabels(nominalLL, flowRangeLL, injectorTest);
-                nominalFlowMap.put("LL", injectorTest.getNominalFlow().doubleValue());
+                nominalFlowMap.put("LL", injectorTest.getNominalFlow().floatValue());
                 break;
             case "VL":
                 setValueToLabels(nominalVL, flowRangeVL, injectorTest);
-                nominalFlowMap.put("VL", injectorTest.getNominalFlow().doubleValue());
+                nominalFlowMap.put("VL", injectorTest.getNominalFlow().floatValue());
                 break;
             case "VE":
                 setValueToLabels(nominalVE, flowRangeVE, injectorTest);
-                nominalFlowMap.put("VE", injectorTest.getNominalFlow().doubleValue());
+                nominalFlowMap.put("VE", injectorTest.getNominalFlow().floatValue());
                 break;
             case "VE2":
                 setValueToLabels(nominalVE2, flowRangeVE2, injectorTest);
-                nominalFlowMap.put("VE2", injectorTest.getNominalFlow().doubleValue());
+                nominalFlowMap.put("VE2", injectorTest.getNominalFlow().floatValue());
                 break;
             default:
         }

@@ -12,9 +12,11 @@ public class TestName {
     @Column(name = "test_name", unique = true, nullable = false, length = 45)
     private String testName;
 
-
     @Column(name = "display_order", unique = true, nullable = false)
     private Integer displayOrder;
+
+    @Column(name = "bit_number", nullable = false)
+    private Integer bitNumber;
 
     public Integer getId() {
         return id;
@@ -26,6 +28,10 @@ public class TestName {
 
     public Integer getDisplayOrder() {
         return displayOrder;
+    }
+
+    public Integer getBitNumber() {
+        return bitNumber;
     }
 
     @Override

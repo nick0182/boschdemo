@@ -50,6 +50,9 @@
             <column name="display_order" type="INT">
                 <constraints nullable="false" unique="true"/>
             </column>
+            <column name="bit_number" type="INT">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
     </changeSet>
 
