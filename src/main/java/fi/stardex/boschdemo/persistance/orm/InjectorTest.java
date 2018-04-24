@@ -64,6 +64,10 @@ public class InjectorTest implements Comparable<InjectorTest> {
         return flowRange;
     }
 
+    public TestName getTestName() {
+        return testName;
+    }
+
     @Override
     public int compareTo(InjectorTest o) {
         return testName.getDisplayOrder() - o.testName.getDisplayOrder();
