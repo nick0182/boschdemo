@@ -17,6 +17,7 @@ import javax.annotation.PostConstruct;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class RootLayoutController {
@@ -78,7 +79,7 @@ public class RootLayoutController {
     @FXML
     public Button calculateBtn;
 
-    private Map<String, Float> realFlowMap = new HashMap<>();
+    private Map<String, Float> realFlowMap = new LinkedHashMap<>();
 
     {
         realFlowMap.put("EM", 0f);
@@ -88,7 +89,7 @@ public class RootLayoutController {
         realFlowMap.put("VE2", 0f);
     }
 
-    private Map<String, Float> nominalFlowMap = new HashMap<>();
+    private Map<String, Float> nominalFlowMap = new LinkedHashMap<>();
 
     public ComboBox getComboBoxModels() {
         return comboBoxModels;

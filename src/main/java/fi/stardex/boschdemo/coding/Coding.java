@@ -3,24 +3,25 @@ package fi.stardex.boschdemo.coding;
 import fi.stardex.boschdemo.persistance.orm.Injector;
 import fi.stardex.boschdemo.persistance.orm.InjectorTest;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class Coding {
 
-    public static final int CHECKSUM_BIT_LENGTH = 4;
+    private static final String MASK = "ABCDEFGHIKLMNOPRSTUVWXYZ12345678";
 
-    public static final int K_COEFF_BIT_LENGTH = 2;
+    private static final int CHECKSUM_BIT_LENGTH = 4;
+
+    private static final int K_COEFF_BIT_LENGTH = 2;
 
     public static void calculate(Injector injector, Map<String, Float> realFlowMap, Map<String, Float> nominalFlowMap) {
 
-        Map<String, Integer> bitNumberMap = new HashMap<>();
+        Map<String, Integer> bitNumberMap = new LinkedHashMap<>();
 
-        Map<String, Float> deltaCodingData = new HashMap<>();
+        Map<String, Float> deltaCodingData = new LinkedHashMap<>();
 
-        Map<String, Integer> preparedCodeData = new HashMap<>();
+        Map<String, Integer> preparedCodeData = new LinkedHashMap<>();
 
-        Map<String, String> binaryMap = new HashMap<>();
+        Map<String, String> binaryMap = new LinkedHashMap<>();
 
         for (InjectorTest test : injector.getInjectorTests()) {
             bitNumberMap.put(test.getTestName().toString(), test.getTestName().getBitNumber());
@@ -76,6 +77,20 @@ public class Coding {
             binaryMap.put(s, convertIntToBinarySystem(preparedCodeData.get(s), bitNumberMap.get(s)));
         }
 
+        StringBuilder sb = new StringBuilder();
+
+        for (String s : binaryMap.keySet()) {
+            if (s.equals("VE2"))
+                continue;
+            sb.append(binaryMap.get(s));
+        }
+
+        List<String> list = getBinaryList(sb.toString(), injector.getCodetype());
+
+        List<Integer> finalList = getIntList(list);
+
+        System.out.println(getCode(finalList));
+
         /*for (Map.Entry<String, Integer> entry : preparedCodeData.entrySet()) {
             System.out.println(entry.getKey() + " " + entry.getValue());
         }
@@ -103,6 +118,38 @@ public class Coding {
             count++;
         }
         sb.append(s);
+        return sb.toString();
+    }
+
+    private static List<String> getBinaryList(String element, int codetype) {
+        List<String> binaryList = new LinkedList<>();
+        if(codetype == 1 || codetype == 2) {
+            for (int i = 0; i < element.length(); i += 5) {
+                binaryList.add(element.substring(i, i + 5));
+            }
+        }
+        if(codetype == 3 || codetype == 4) {
+            for (int i = 0; i < element.length(); i += 4) {
+                binaryList.add(element.substring(i, i + 4));
+            }
+        }
+        return binaryList;
+    }
+
+    private static List<Integer> getIntList(List<String> list) {
+        List<Integer> intList = new LinkedList<>();
+        for(String s : list) {
+            intList.add(Integer.parseInt(s, 2));
+        }
+        return intList;
+    }
+
+    private static String getCode(List<Integer> finalList) {
+        StringBuilder sb = new StringBuilder();
+        char[] mask = MASK.toCharArray();
+        for(int i : finalList) {
+            sb.append(mask[i]);
+        }
         return sb.toString();
     }
 }
