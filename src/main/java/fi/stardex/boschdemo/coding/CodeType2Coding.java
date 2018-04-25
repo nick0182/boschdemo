@@ -9,16 +9,8 @@ import java.util.Map;
 
 public class CodeType2Coding extends CodeTypeCoding {
 
-    private Injector injector;
-
-    private Map<String, Float> realFlowMap;
-
-    private Map<String, Float> nominalFlowMap;
-
     public CodeType2Coding(Injector injector, Map<String, Float> realFlowMap, Map<String, Float> nominalFlowMap) {
-        this.injector  =injector;
-        this.realFlowMap = realFlowMap;
-        this.nominalFlowMap = nominalFlowMap;
+        super(injector, realFlowMap, nominalFlowMap);
     }
 
     @Override
@@ -71,31 +63,7 @@ public class CodeType2Coding extends CodeTypeCoding {
 
     @Override
     protected void createPreparedCodeDataMap(Map<String,Integer> preparedCodeDataMap) {
-        for (String test : realFlowMap.keySet()) {
-            preparedCodeDataMap.put(test, Math.round(deltaCodingDataMap.get(test) / k_coeffMap.get(injector.getK_coefficient())));
-        }
-
-        int var = 0;
-        for (String test : preparedCodeDataMap.keySet()) {
-            var += preparedCodeDataMap.get(test);
-        }
-        var += injector.getK_coefficient();
-
-        int checkSum = getCheckSum(var);
-
-        for (String test : preparedCodeDataMap.keySet()) {
-            int d = preparedCodeDataMap.get(test);
-            if (d < 0) {
-                preparedCodeDataMap.put(test, d + (int) Math.pow(2, bitNumberMap.get(test)));
-            }
-        }
-
-        preparedCodeDataMap.put("CheckSum", checkSum);
-        preparedCodeDataMap.put("K_Coefficient", injector.getK_coefficient());
-    }
-
-    private int getCheckSum(int var) {
-        return (var & 15) + ((var & 240) >> 4) + 1 & 15;
+        super.createPreparedCodeDataMap(preparedCodeDataMap);
     }
 
     private String convertIntToBinarySystem(int element, int bit_number) {

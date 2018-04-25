@@ -138,7 +138,11 @@ public class RootLayoutController {
     private void changed(ObservableValue<? extends Injector> observable, Injector oldValue, Injector newValue) {
         if (newValue == null)
             return;
-
+        if (newValue.getCodetype() == 3) {
+            nominalVE2.setText("");
+            flowRangeVE2.setText("");
+            realFlowVE2.setVisible(false);
+        }
         changeInjector(newValue);
     }
 
@@ -169,8 +173,13 @@ public class RootLayoutController {
                 nominalFlowMap.put("VE", injectorTest.getNominalFlow().floatValue());
                 break;
             case "VE2":
-                setValueToLabels(nominalVE2, flowRangeVE2, injectorTest);
-                nominalFlowMap.put("VE2", injectorTest.getNominalFlow().floatValue());
+                if (comboBoxModels.getSelectionModel().getSelectedItem().getCodetype() != 3) {
+                    setValueToLabels(nominalVE2, flowRangeVE2, injectorTest);
+                    nominalFlowMap.put("VE2", injectorTest.getNominalFlow().floatValue());
+                    realFlowVE2.setVisible(true);
+                } else {
+                    realFlowMap.remove("VE2");
+                }
                 break;
             default:
         }
@@ -186,7 +195,7 @@ public class RootLayoutController {
         flowRangeLabel.setText(String.valueOf(flowRange));
     }
 
-    UnaryOperator<TextFormatter.Change> filter = change -> {
+    private UnaryOperator<TextFormatter.Change> filter = change -> {
         String input = change.getText();
         if (input.matches(PATTERN)) {
             return change;

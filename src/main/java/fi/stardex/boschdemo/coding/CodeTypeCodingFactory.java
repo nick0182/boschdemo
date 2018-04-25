@@ -11,9 +11,8 @@ public class CodeTypeCodingFactory {
                 return new CodeType1Coding(injector, realFlowMap, nominalFlowMap);
             case 2:
                 return new CodeType2Coding(injector, realFlowMap, nominalFlowMap);
-            /*case 3:
+            case 3:
                 return new CodeType3Coding(injector, realFlowMap, nominalFlowMap);
-                break;*/
             case 4:
                 return new CodeType4Coding(injector, realFlowMap, nominalFlowMap);
             default:

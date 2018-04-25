@@ -3,11 +3,13 @@ package fi.stardex.boschdemo.coding;
 import fi.stardex.boschdemo.persistance.orm.Injector;
 import fi.stardex.boschdemo.persistance.orm.InjectorTest;
 
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
-public class CodeType1Coding extends CodeTypeCoding {
+public class CodeType3Coding extends CodeTypeCoding {
 
-    public CodeType1Coding(Injector injector, Map<String, Float> realFlowMap, Map<String, Float> nominalFlowMap) {
+    public CodeType3Coding(Injector injector, Map<String, Float> realFlowMap, Map<String, Float> nominalFlowMap) {
         super(injector, realFlowMap, nominalFlowMap);
     }
 
@@ -27,23 +29,22 @@ public class CodeType1Coding extends CodeTypeCoding {
         StringBuilder sb = new StringBuilder();
 
         for (String s : binaryMap.keySet()) {
-            if (s.equals("VE2"))
-                continue;
             sb.append(binaryMap.get(s));
         }
+        sb.append("00");
 
         List<String> list = getBinaryList(sb.toString(), injector.getCodetype());
 
-        List<Integer> finalList = getIntList(list);
-
-        return getCode(finalList);
+        return getCode(list);
 
     }
 
     @Override
     protected void createBitNumberMap(Map<String, Integer> bitNumberMap) {
         for (InjectorTest test : injector.getInjectorTests()) {
-            bitNumberMap.put(test.getTestName().toString(), test.getTestName().getBitNumber());
+            if (!test.getTestName().getTestName().equals("VE2")) {
+                bitNumberMap.put(test.getTestName().toString(), test.getTestName().getBitNumber());
+            }
         }
 
         bitNumberMap.put("CheckSum", CHECKSUM_BIT_LENGTH);
@@ -58,7 +59,7 @@ public class CodeType1Coding extends CodeTypeCoding {
     }
 
     @Override
-    protected void createPreparedCodeDataMap(Map<String,Integer> preparedCodeDataMap) {
+    protected void createPreparedCodeDataMap(Map<String, Integer> preparedCodeDataMap) {
         super.createPreparedCodeDataMap(preparedCodeDataMap);
     }
 
@@ -76,12 +77,12 @@ public class CodeType1Coding extends CodeTypeCoding {
 
     private List<String> getBinaryList(String element, int codetype) {
         List<String> binaryList = new LinkedList<>();
-        if(codetype == 1 || codetype == 2) {
+        if (codetype == 1 || codetype == 2) {
             for (int i = 0; i < element.length(); i += 5) {
                 binaryList.add(element.substring(i, i + 5));
             }
         }
-        if(codetype == 3 || codetype == 4) {
+        if (codetype == 3 || codetype == 4) {
             for (int i = 0; i < element.length(); i += 4) {
                 binaryList.add(element.substring(i, i + 4));
             }
@@ -91,17 +92,16 @@ public class CodeType1Coding extends CodeTypeCoding {
 
     private List<Integer> getIntList(List<String> list) {
         List<Integer> intList = new LinkedList<>();
-        for(String s : list) {
+        for (String s : list) {
             intList.add(Integer.parseInt(s, 2));
         }
         return intList;
     }
 
-    private String getCode(List<Integer> finalList) {
+    private String getCode(List<String> list) {
         StringBuilder sb = new StringBuilder();
-        char[] mask = MASK.toCharArray();
-        for(int i : finalList) {
-            sb.append(mask[i]);
+        for (String x : list) {
+            sb.append(Integer.toString(Integer.parseInt(x, 2), 16).toUpperCase());
         }
         return sb.toString();
     }

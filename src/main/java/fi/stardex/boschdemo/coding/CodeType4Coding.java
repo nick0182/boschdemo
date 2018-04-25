@@ -9,16 +9,8 @@ import java.util.Map;
 
 public class CodeType4Coding extends CodeTypeCoding {
 
-    private Injector injector;
-
-    private Map<String, Float> realFlowMap;
-
-    private Map<String, Float> nominalFlowMap;
-
     public CodeType4Coding(Injector injector, Map<String, Float> realFlowMap, Map<String, Float> nominalFlowMap) {
-        this.injector = injector;
-        this.realFlowMap = realFlowMap;
-        this.nominalFlowMap = nominalFlowMap;
+        super(injector, realFlowMap, nominalFlowMap);
     }
 
     @Override
@@ -26,9 +18,21 @@ public class CodeType4Coding extends CodeTypeCoding {
 
         createBitNumberMap(bitNumberMap);
 
+        for(Map.Entry<String, Integer> entry : bitNumberMap.entrySet()) {
+            System.out.println(entry.getKey() + " " + entry.getValue());
+        }
+
         createDeltaCodingDataMap(deltaCodingDataMap);
 
+        for(Map.Entry<String, Float> entry : deltaCodingDataMap.entrySet()) {
+            System.out.println(entry.getKey() + " " + entry.getValue());
+        }
+
         createPreparedCodeDataMap(preparedCodeDataMap);
+
+        for(Map.Entry<String, Integer> entry : preparedCodeDataMap.entrySet()) {
+            System.out.println(entry.getKey() + " " + entry.getValue());
+        }
 
         for (String s : preparedCodeDataMap.keySet()) {
             binaryMap.put(s, convertIntToBinarySystem(preparedCodeDataMap.get(s), bitNumberMap.get(s)));
@@ -46,11 +50,13 @@ public class CodeType4Coding extends CodeTypeCoding {
         sb.append("0");
         sb.append(binaryMap.get("CheckSum"));
 
+        System.out.println(sb);
+
         List<String> list = getBinaryList(sb.toString(), injector.getCodetype());
 
-        List<Integer> finalList = getIntList(list);
+        System.out.println(list);
 
-        return getCode(finalList);
+        return getCode(list);
 
     }
 
@@ -73,31 +79,7 @@ public class CodeType4Coding extends CodeTypeCoding {
 
     @Override
     protected void createPreparedCodeDataMap(Map<String, Integer> preparedCodeDataMap) {
-        for (String test : realFlowMap.keySet()) {
-            preparedCodeDataMap.put(test, Math.round(deltaCodingDataMap.get(test) / k_coeffMap.get(injector.getK_coefficient())));
-        }
-
-        int var = 0;
-        for (String test : preparedCodeDataMap.keySet()) {
-            var += preparedCodeDataMap.get(test);
-        }
-        var += injector.getK_coefficient();
-
-        int checkSum = getCheckSum(var);
-
-        for (String test : preparedCodeDataMap.keySet()) {
-            int d = preparedCodeDataMap.get(test);
-            if (d < 0) {
-                preparedCodeDataMap.put(test, d + (int) Math.pow(2, bitNumberMap.get(test)));
-            }
-        }
-
-        preparedCodeDataMap.put("CheckSum", checkSum);
-        preparedCodeDataMap.put("K_Coefficient", injector.getK_coefficient());
-    }
-
-    private int getCheckSum(int var) {
-        return (var & 15) + ((var & 240) >> 4) + 1 & 15;
+        super.createPreparedCodeDataMap(preparedCodeDataMap);
     }
 
     private String convertIntToBinarySystem(int element, int bit_number) {
@@ -135,11 +117,10 @@ public class CodeType4Coding extends CodeTypeCoding {
         return intList;
     }
 
-    private String getCode(List<Integer> finalList) {
+    private String getCode(List<String> list) {
         StringBuilder sb = new StringBuilder();
-        char[] mask = MASK.toCharArray();
-        for (int i : finalList) {
-            sb.append(mask[i]);
+        for(String x : list) {
+            sb.append(Integer.toString(Integer.parseInt(x,2),16).toUpperCase());
         }
         return sb.toString();
     }
