@@ -1,21 +1,18 @@
 package fi.stardex.boschdemo.ui.controller;
 
-import fi.stardex.boschdemo.coding.Coding;
+import fi.stardex.boschdemo.coding.CodeTypeCoding;
+import fi.stardex.boschdemo.coding.CodeTypeCodingFactory;
 import fi.stardex.boschdemo.persistance.orm.Injector;
 import fi.stardex.boschdemo.persistance.orm.InjectorTest;
 import javafx.beans.value.ObservableValue;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.input.MouseEvent;
 
 import javax.annotation.PostConstruct;
 import java.math.BigDecimal;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.UnaryOperator;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class RootLayoutController {
 
@@ -133,8 +130,8 @@ public class RootLayoutController {
         realFlowVE2.setTextFormatter(new TextFormatter<String>(filter));
 
         calculateBtn.setOnMouseClicked(event -> {
-            String code = Coding.calculate(comboBoxModels.getSelectionModel().getSelectedItem(), realFlowMap, nominalFlowMap);
-            codeTF.setText(code);
+            CodeTypeCoding type = CodeTypeCodingFactory.getCodTypeCoding(comboBoxModels.getSelectionModel().getSelectedItem());
+            codeTF.setText(type.calculate(realFlowMap, nominalFlowMap));
         });
     }
 
