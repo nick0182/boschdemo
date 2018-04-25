@@ -6,16 +6,16 @@ import fi.stardex.boschdemo.persistance.orm.InjectorTest;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 
 import javax.annotation.PostConstruct;
 import java.math.BigDecimal;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.function.UnaryOperator;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class RootLayoutController {
 
@@ -79,6 +79,8 @@ public class RootLayoutController {
     @FXML
     private TextField codeTF;
 
+    private static final String PATTERN = "[0-9]*\\.?[0-9]*";
+
     private Map<String, Float> realFlowMap = new LinkedHashMap<>();
 
     {
@@ -100,31 +102,41 @@ public class RootLayoutController {
         comboBoxModels.getSelectionModel().selectedItemProperty().addListener(RootLayoutController.this::changed);
 
         realFlowEM.textProperty().addListener((observable, oldValue, newValue) -> {
-            realFlowMap.put("EM", Float.parseFloat(newValue));
+            if (!newValue.equals(""))
+                realFlowMap.put("EM", Float.parseFloat(newValue));
         });
 
         realFlowLL.textProperty().addListener((observable, oldValue, newValue) -> {
-            realFlowMap.put("LL", Float.parseFloat(newValue));
+            if (!newValue.equals(""))
+                realFlowMap.put("LL", Float.parseFloat(newValue));
         });
 
         realFlowVL.textProperty().addListener((observable, oldValue, newValue) -> {
-            realFlowMap.put("VL", Float.parseFloat(newValue));
+            if (!newValue.equals(""))
+                realFlowMap.put("VL", Float.parseFloat(newValue));
         });
 
         realFlowVE.textProperty().addListener((observable, oldValue, newValue) -> {
-            realFlowMap.put("VE", Float.parseFloat(newValue));
+            if (!newValue.equals(""))
+                realFlowMap.put("VE", Float.parseFloat(newValue));
         });
 
         realFlowVE2.textProperty().addListener((observable, oldValue, newValue) -> {
-            realFlowMap.put("VE2", Float.parseFloat(newValue));
+            if (!newValue.equals(""))
+                realFlowMap.put("VE2", Float.parseFloat(newValue));
         });
+
+        realFlowEM.setTextFormatter(new TextFormatter<String>(filter));
+        realFlowLL.setTextFormatter(new TextFormatter<String>(filter));
+        realFlowVL.setTextFormatter(new TextFormatter<String>(filter));
+        realFlowVE.setTextFormatter(new TextFormatter<String>(filter));
+        realFlowVE2.setTextFormatter(new TextFormatter<String>(filter));
 
         calculateBtn.setOnMouseClicked(event -> {
             String code = Coding.calculate(comboBoxModels.getSelectionModel().getSelectedItem(), realFlowMap, nominalFlowMap);
             codeTF.setText(code);
         });
     }
-
 
     private void changed(ObservableValue<? extends Injector> observable, Injector oldValue, Injector newValue) {
         if (newValue == null)
@@ -176,4 +188,12 @@ public class RootLayoutController {
         nominalLabel.setText(String.valueOf(nominalFlow));
         flowRangeLabel.setText(String.valueOf(flowRange));
     }
+
+    UnaryOperator<TextFormatter.Change> filter = change -> {
+        String input = change.getText();
+        if (input.matches(PATTERN)) {
+            return change;
+        }
+        return null;
+    };
 }
