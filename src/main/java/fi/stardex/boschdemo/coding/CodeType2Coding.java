@@ -3,9 +3,11 @@ package fi.stardex.boschdemo.coding;
 import fi.stardex.boschdemo.persistance.orm.Injector;
 import fi.stardex.boschdemo.persistance.orm.InjectorTest;
 
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
-public class CodeType1Coding extends CodeTypeCoding {
+public class CodeType2Coding extends CodeTypeCoding {
 
     private Injector injector;
 
@@ -13,7 +15,7 @@ public class CodeType1Coding extends CodeTypeCoding {
 
     private Map<String, Float> nominalFlowMap;
 
-    public CodeType1Coding(Injector injector, Map<String, Float> realFlowMap, Map<String, Float> nominalFlowMap) {
+    public CodeType2Coding(Injector injector, Map<String, Float> realFlowMap, Map<String, Float> nominalFlowMap) {
         this.injector  =injector;
         this.realFlowMap = realFlowMap;
         this.nominalFlowMap = nominalFlowMap;
@@ -39,6 +41,8 @@ public class CodeType1Coding extends CodeTypeCoding {
                 continue;
             sb.append(binaryMap.get(s));
         }
+
+        sb.append(binaryMap.get("VE2"));
 
         List<String> list = getBinaryList(sb.toString(), injector.getCodetype());
 

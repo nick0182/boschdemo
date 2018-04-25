@@ -1,6 +1,7 @@
 package fi.stardex.boschdemo.coding;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public abstract class CodeTypeCoding {
@@ -19,6 +20,19 @@ public abstract class CodeTypeCoding {
         k_coeffMap.put(2, 0.25f);
     }
 
-    public abstract String calculate(Map<String, Float> realFlowMap, Map<String, Float> nominalFlowMap);
+    protected Map<String, Integer> bitNumberMap = new LinkedHashMap<>();
 
+    protected Map<String, Float> deltaCodingDataMap = new LinkedHashMap<>();
+
+    protected Map<String, Integer> preparedCodeDataMap = new LinkedHashMap<>();
+
+    protected Map<String, String> binaryMap = new LinkedHashMap<>();
+
+    public abstract String calculate();
+
+    protected abstract void createBitNumberMap(Map<String, Integer> bitNumberMap);
+
+    protected abstract void createDeltaCodingDataMap(Map<String, Float> deltaCodingDataMap);
+
+    protected abstract void createPreparedCodeDataMap(Map<String,Integer> preparedCodeDataMap);
 }

@@ -2,21 +2,20 @@ package fi.stardex.boschdemo.coding;
 
 import fi.stardex.boschdemo.persistance.orm.Injector;
 
+import java.util.Map;
+
 public class CodeTypeCodingFactory {
-    public static CodeTypeCoding getCodTypeCoding(Injector injector) {
+    public static CodeTypeCoding getCodTypeCoding(Injector injector, Map<String, Float> realFlowMap, Map<String, Float> nominalFlowMap) {
         switch(injector.getCodetype()) {
             case 1:
-                return new CodeType1Coding(injector);
-            /*    break;
+                return new CodeType1Coding(injector, realFlowMap, nominalFlowMap);
             case 2:
-                return new CodeType2Coding();
-                break;
-            case 3:
-                return new CodeType3Coding();
-                break;
-            case 4:
-                return new CodeType4Coding();
+                return new CodeType2Coding(injector, realFlowMap, nominalFlowMap);
+            /*case 3:
+                return new CodeType3Coding(injector, realFlowMap, nominalFlowMap);
                 break;*/
+            case 4:
+                return new CodeType4Coding(injector, realFlowMap, nominalFlowMap);
             default:
                 return null;
         }
