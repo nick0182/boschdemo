@@ -119,7 +119,7 @@ public class RootLayoutController {
         });
 
         realFlowVE2.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.equals(""))
+            if (!newValue.equals("")&&!newValue.equals("0"))
                 realFlowMap.put("VE2", Float.parseFloat(newValue));
         });
 
@@ -141,6 +141,7 @@ public class RootLayoutController {
         if (newValue.getCodetype() == 3) {
             nominalVE2.setText("");
             flowRangeVE2.setText("");
+            realFlowVE2.setText("0");
             realFlowVE2.setVisible(false);
         }
         changeInjector(newValue);
