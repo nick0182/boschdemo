@@ -5,7 +5,7 @@ import fi.stardex.boschdemo.persistance.orm.Injector;
 import java.util.Map;
 
 public class CodeTypeCodingFactory {
-    public static CodeTypeCoding getCodTypeCoding(Injector injector, Map<String, Float> realFlowMap, Map<String, Float> nominalFlowMap) {
+    public static CodeTypeCoding getCodTypeCoding(Injector injector, Map<String, Float> realFlowMap, Map<String, Float> nominalFlowMap) throws Exception {
         switch(injector.getCodetype()) {
             case 1:
                 return new CodeType1Coding(injector, realFlowMap, nominalFlowMap);
@@ -16,7 +16,7 @@ public class CodeTypeCodingFactory {
             case 4:
                 return new CodeType4Coding(injector, realFlowMap, nominalFlowMap);
             default:
-                return null;
+                throw new Exception("Wrong code type!");
         }
     }
 }

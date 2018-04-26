@@ -130,8 +130,12 @@ public class RootLayoutController {
         realFlowVE2.setTextFormatter(new TextFormatter<String>(filter));
 
         calculateBtn.setOnMouseClicked(event -> {
-            CodeTypeCoding type = CodeTypeCodingFactory.getCodTypeCoding(comboBoxModels.getSelectionModel().getSelectedItem(), realFlowMap, nominalFlowMap);
-            codeTF.setText(type.calculate());
+            try {
+                CodeTypeCoding type = CodeTypeCodingFactory.getCodTypeCoding(comboBoxModels.getSelectionModel().getSelectedItem(), realFlowMap, nominalFlowMap);
+                codeTF.setText(type.calculate());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         });
     }
 
